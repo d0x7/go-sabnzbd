@@ -29,24 +29,34 @@ func (s *Sabnzbd) Auth() (auth string, err error) {
 	return r.Auth, err
 }
 
-func (s *Sabnzbd) SimpleQueue() (r *SimpleQueueResponse, err error) {
+func (s *Sabnzbd) SimpleQueue() (r *QueueResponse, err error) {
 	u := s.url()
 	u.SetJsonOutput()
 	u.Authenticate()
-	u.SetMode("qstatus")
-	r = &SimpleQueueResponse{}
+	u.SetMode("queue")
+	r = &QueueResponse{}
 	err = u.CallJSON(r)
 	return r, err
 }
 
-func (s *Sabnzbd) AdvancedQueue(start, limit int) (r *AdvancedQueueResponse, err error) {
+func (s *Sabnzbd) AdvancedQueue(start, limit int) (r *QueueResponse, err error) {
 	u := s.url()
 	u.SetJsonOutput()
 	u.Authenticate()
 	u.SetMode("queue")
 	u.v.Set("start", fmt.Sprintf("%d", start))
 	u.v.Set("limit", fmt.Sprintf("%d", limit))
-	r = &AdvancedQueueResponse{}
+	r = &QueueResponse{}
+	err = u.CallJSON(r)
+	return r, err
+}
+
+func (s *Sabnzbd) SimpleHistory() (r *HistoryResponse, err error) {
+	u := s.url()
+	u.SetJsonOutput()
+	u.Authenticate()
+	u.SetMode("history")
+	r = &HistoryResponse{}
 	err = u.CallJSON(r)
 	return r, err
 }
