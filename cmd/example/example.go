@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/mrobinsn/go-sabnzbd"
+	"github.com/d0x7/go-sabnzbd/v2"
 )
 
 func main() {
