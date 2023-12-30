@@ -24,6 +24,14 @@ type Sabnzbd struct {
 	rt       http.RoundTripper
 }
 
+func SimpleClient(addr, apikey string) (*Sabnzbd, error) {
+	return New(Addr(addr), ApikeyAuth(apikey))
+}
+
+func SecureClient(host, apikey string) (*Sabnzbd, error) {
+	return New(SecureAddr(host), ApikeyAuth(apikey))
+}
+
 func New(options ...Option) (s *Sabnzbd, err error) {
 	s = &Sabnzbd{
 		addr: "localhost:8080",

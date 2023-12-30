@@ -1,6 +1,9 @@
 package sabnzbd
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 type Option func(*Sabnzbd) error
 
@@ -36,6 +39,13 @@ func UseInsecureHTTP() Option {
 func Addr(addr string) Option {
 	return func(s *Sabnzbd) error {
 		return s.setAddr(addr)
+	}
+}
+
+func SecureAddr(host string) Option {
+	return func(s *Sabnzbd) error {
+		s.useHttps()
+		return s.setAddr(fmt.Sprintf("%s:443", host))
 	}
 }
 
