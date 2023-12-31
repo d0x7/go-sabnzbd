@@ -153,7 +153,7 @@ type QueueResponse struct {
 	SpeedLimitPercentage   int         `json:"speedlimit,string"`
 	SpeedLimit             BytesFromB  `json:"speedlimit_abs"`
 	HaveWarnings           string      `json:"have_warnings"`
-	Finishaction           *string     `json:"finishaction"`
+	FinishAction           *string     `json:"finishaction"`
 	Quota                  string      `json:"quota"`
 	HaveQuota              bool        `json:"have_quota"`
 	LeftQuota              string      `json:"left_quota"`
@@ -162,8 +162,8 @@ type QueueResponse struct {
 	BytesPerSecond         BytesFromKB `json:"kbpersec"`
 	Speed                  string      `json:"speed"`
 	BytesLeft              BytesFromMB `json:"mbleft"`
-	Bytes                  BytesFromMB `json:"mb"`
-	BytesMissing           BytesFromMB
+	BytesTotal             BytesFromMB `json:"mb"`
+	Bytes                  BytesFromMB
 	SizeLeft               string      `json:"sizeleft"`
 	Size                   string      `json:"size"`
 	NoOfSlotsTotal         int         `json:"noofslots_total"`
@@ -187,7 +187,7 @@ func (r *QueueResponse) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	err := json.Unmarshal(queue.Queue, queueResponse(r))
-	r.BytesMissing = r.Bytes - r.BytesLeft
+	r.Bytes = r.BytesTotal - r.BytesLeft
 	return err
 }
 
@@ -202,11 +202,12 @@ type QueueSlot struct {
 	Password     string      `json:"password"`
 	Category     string      `json:"cat"`
 	BytesLeft    BytesFromMB `json:"mbleft"`
-	Bytes        BytesFromMB `json:"mb"`
+	BytesTotal   BytesFromMB `json:"mb"`
 	Size         string      `json:"size"`
 	SizeLeft     string      `json:"sizeleft"`
-	Percentage   string      `json:"percentage"`
-	BytesMissing BytesFromMB `json:"mbmissing"`
+	Percentage   int         `json:"percentage,string"`
+	MBMissing    BytesFromMB `json:"mbmissing"` // doesn't seem to be working
+	Bytes        BytesFromMB
 	DirectUnpack string      `json:"direct_unpack"`
 	Status       string      `json:"status"`
 	TimeLeft     SabDuration `json:"timeleft"`

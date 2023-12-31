@@ -46,7 +46,7 @@ func main() {
 
   fmt.Printf("SpeedLimit is set to %v%%, aka. %s/s absolute\n", queue.SpeedLimitPercentage, queue.SpeedLimit)
   fmt.Printf("There is %s of %s free space left\n", queue.DownloadDiskFreeSpace, queue.DownloadDiskTotalSpace)
-  fmt.Printf("Of the %d downloads, there are %s of %s downloaded already\n", queue.NoOfSlotsTotal, queue.BytesMissing, queue.Bytes)
+  fmt.Printf("Of the %d downloads, there are %s of %s downloaded already\n", queue.NoOfSlotsTotal, queue.Bytes, queue.BytesTotal)
   fmt.Printf("The remaining %s will be downloaded ", queue.BytesLeft)
 
   if queue.Paused {
