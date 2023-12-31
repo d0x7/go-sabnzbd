@@ -39,7 +39,7 @@ func (s *Sabnzbd) SimpleQueue() (r *QueueResponse, err error) {
 	return r, err
 }
 
-func (s *Sabnzbd) AdvancedQueue(start, limit int) (r *QueueResponse, err error) {
+func (s *Sabnzbd) Queue(start, limit int) (r *QueueResponse, err error) {
 	u := s.url()
 	u.SetJsonOutput()
 	u.Authenticate()
