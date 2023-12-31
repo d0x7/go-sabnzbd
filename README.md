@@ -59,6 +59,13 @@ func main() {
   //	=> There is 15.86 TB of 18.50 TB free space left
   //	=> Of the 2 downloads, there are 779.35 MB of 9.55 GB downloaded already
   //	=> The remaining 8.77 GB will be downloaded in ETA 30m25s
+
+  // Accessing the server stats is also possible
+  stats, err := client.ServerStats()
+  fmt.Printf("Total downloaded since start is %s, this month %s, this week %s and today %s\n", stats.Total, stats.Month, stats.Week, stats.Day)
+
+  //	=> Total downloaded since start is 447.73 GB, this month 344.22 GB, this week 38.46 GB and today 965.50 MB
+
 }
 ```
 

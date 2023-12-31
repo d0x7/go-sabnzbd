@@ -290,6 +290,26 @@ type HistoryStageLog struct {
 	Actions []string `json:"actions"`
 }
 
+type ServerStatsResponse struct {
+	Total   BytesFromB                   `json:"total"`
+	Month   BytesFromB                   `json:"month"`
+	Week    BytesFromB                   `json:"week"`
+	Day     BytesFromB                   `json:"day"`
+	Servers map[string]ServerStatsServer `json:"servers"`
+}
+
+type ServerStatsServer struct {
+	Total           BytesFromB                     `json:"total"`
+	Month           BytesFromB                     `json:"month"`
+	Week            BytesFromB                     `json:"week"`
+	Day             BytesFromB                     `json:"day"`
+	Daily           map[ServerStatsDate]BytesFromB `json:"daily"`
+	ArticlesTried   map[ServerStatsDate]int        `json:"articles_tried"`
+	ArticlesSuccess map[ServerStatsDate]int        `json:"articles_success"`
+}
+
+type ServerStatsDate string
+
 type warningsResponse struct {
 	Warnings []string `json:"warnings"`
 	apiError

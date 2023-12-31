@@ -73,6 +73,16 @@ func (s *Sabnzbd) History(start, limit int) (r *HistoryResponse, err error) {
 	return r, err
 }
 
+func (c *Sabnzbd) ServerStats() (r *ServerStatsResponse, err error) {
+	u := c.url()
+	u.SetJsonOutput()
+	u.Authenticate()
+	u.SetMode("server_stats")
+	r = &ServerStatsResponse{}
+	err = u.CallJSON(r)
+	return r, err
+}
+
 func (s *Sabnzbd) Warnings() (warnings []string, err error) {
 	u := s.url()
 	u.SetJsonOutput()
