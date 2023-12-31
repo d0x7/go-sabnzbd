@@ -188,6 +188,7 @@ func (r *QueueResponse) UnmarshalJSON(data []byte) error {
 	}
 	err := json.Unmarshal(queue.Queue, queueResponse(r))
 	r.Bytes = r.BytesTotal - r.BytesLeft
+
 	return err
 }
 
@@ -214,6 +215,20 @@ type QueueSlot struct {
 	AverageAge   string      `json:"avg_age"`
 }
 
+func (r *QueueSlot) UnmarshalJSON(data []byte) error {
+	type TmpQueueSlot QueueSlot
+	var tmpSlot TmpQueueSlot
+
+	if err := json.Unmarshal(data, &tmpSlot); err != nil {
+		return err
+	}
+
+	*r = QueueSlot(tmpSlot)
+	r.Bytes = r.BytesTotal - r.BytesLeft
+
+	return nil
+}
+
 type HistoryResponse struct {
 	TotalSize         string        `json:"total_size"`
 	MonthSize         string        `json:"month_size"`
@@ -237,15 +252,6 @@ func (r *HistoryResponse) UnmarshalJSON(data []byte) error {
 	}
 	err := json.Unmarshal(history.History, historyResponse(r))
 
-	// Parsing time/duration fields
-	if r.NoOfSlots > 0 {
-		for i, slot := range r.Slots {
-			slot.Completed = time.Unix(slot.CompletedUnix, 0)
-			slot.DownloadDuration = time.Duration(slot.DownloadTime * int64(time.Second))
-			slot.PostProcessingDuration = time.Duration(slot.PostProcessingTime * int64(time.Second))
-			r.Slots[i] = slot
-		}
-	}
 	return err
 }
 
@@ -284,6 +290,24 @@ type HistorySlot struct {
 	Size                   string            `json:"size"`
 	Loaded                 bool              `json:"loaded"`
 	Retry                  int
+}
+
+func (r *HistorySlot) UnmarshalJSON(data []byte) error {
+	type TmpHistorySlot HistorySlot
+	var tmpSlot TmpHistorySlot
+
+	if err := json.Unmarshal(data, &tmpSlot); err != nil {
+		fmt.Printf("failed to unmarshal queue slot: %s\n", err)
+		return err
+	}
+
+	*r = HistorySlot(tmpSlot)
+
+	r.Completed = time.Unix(r.CompletedUnix, 0)
+	r.DownloadDuration = time.Duration(r.DownloadTime * int64(time.Second))
+	r.PostProcessingDuration = time.Duration(r.PostProcessingTime * int64(time.Second))
+
+	return nil
 }
 
 type HistoryStageLog struct {
