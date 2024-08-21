@@ -1,3 +1,3 @@
-module github.com/d0x7/go-sabnzbd/v2
+module xiam.li/go-sabnzbd
 
 go 1.21.5
